@@ -34,7 +34,10 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   @override
   void initState() {
     super.initState();
-    _initChat();
+    // Defer initialization to after the widget tree is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _initChat();
+    });
   }
 
   @override

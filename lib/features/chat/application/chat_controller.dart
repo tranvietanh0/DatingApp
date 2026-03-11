@@ -23,20 +23,27 @@ class ChatController extends ChangeNotifier {
   bool get isSending => _isSending;
   String? get errorMessage => _errorMessage;
 
+  bool _isDisposed = false;
+
+  void _safeNotify() {
+    if (!_isDisposed) notifyListeners();
+  }
+
   void watchMessages(String matchId, String currentUserId) {
-    if (_currentMatchId == matchId) return;
+    if (_currentMatchId == matchId || _isDisposed) return;
 
     _subscription?.cancel();
     _currentMatchId = matchId;
     _isLoading = true;
     _errorMessage = null;
-    notifyListeners();
+    _safeNotify();
 
     _subscription = _repository.watchMessages(matchId).listen(
       (messages) {
+        if (_isDisposed) return;
         _messages = messages;
         _isLoading = false;
-        notifyListeners();
+        _safeNotify();
 
         // Mark messages as read
         _repository.markMessagesAsRead(
@@ -45,9 +52,10 @@ class ChatController extends ChangeNotifier {
         );
       },
       onError: (error) {
+        if (_isDisposed) return;
         _errorMessage = 'Failed to load messages';
         _isLoading = false;
-        notifyListeners();
+        _safeNotify();
       },
     );
   }
@@ -57,11 +65,11 @@ class ChatController extends ChangeNotifier {
     required String senderId,
     required String text,
   }) async {
-    if (text.trim().isEmpty || _isSending) return;
+    if (text.trim().isEmpty || _isSending || _isDisposed) return;
 
     _isSending = true;
     _errorMessage = null;
-    notifyListeners();
+    _safeNotify();
 
     try {
       await _repository.sendMessage(
@@ -74,18 +82,22 @@ class ChatController extends ChangeNotifier {
     }
 
     _isSending = false;
-    notifyListeners();
+    _safeNotify();
   }
 
   void stopWatching() {
     _subscription?.cancel();
+    _subscription = null;
     _currentMatchId = null;
     _messages = [];
   }
 
   @override
   void dispose() {
+    if (_isDisposed) return;
+    _isDisposed = true;
     _subscription?.cancel();
+    _subscription = null;
     super.dispose();
   }
 }

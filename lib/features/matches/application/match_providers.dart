@@ -2,27 +2,26 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../auth/application/auth_providers.dart';
 import '../data/bumble_rules_repository.dart';
+import '../data/firestore_match_repository.dart';
 import '../data/match_repository.dart';
 import '../data/mock_match_repository.dart';
 import 'match_controller.dart';
 
 // Set to true to use mock data for testing without Firebase
-const bool useMockMatches = true;
+const bool useMockMatches = false;
 
 final matchRepositoryProvider = Provider<MatchRepository>((ref) {
   if (useMockMatches) {
     return MockMatchRepository();
   }
-  // TODO: Return FirestoreMatchRepository() when Firebase is configured
-  return MockMatchRepository();
+  return FirestoreMatchRepository();
 });
 
 final bumbleRulesRepositoryProvider = Provider<BumbleRulesRepository>((ref) {
   if (useMockMatches) {
     return MockBumbleRulesRepository();
   }
-  // TODO: Return FirestoreBumbleRulesRepository() when Firebase is configured
-  return MockBumbleRulesRepository();
+  return FirestoreBumbleRulesRepository();
 });
 
 final matchControllerProvider = ChangeNotifierProvider<MatchController>((ref) {

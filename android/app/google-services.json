@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "309647849729",
+    "project_id": "tranv-dating-app",
+    "storage_bucket": "tranv-dating-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309647849729:android:b88be8133c0abf85560300",
+        "android_client_info": {
+          "package_name": "com.myproject.dating_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "309647849729-l299evp6vr8tallmk390o5dvdnrium59.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.myproject.dating_app",
+            "certificate_hash": "f03f2fc3c9bb35a8b7f9bd92a2586b688d94ea01"
+          }
+        },
+        {
+          "client_id": "309647849729-089kr1mfosg8njq52bkh8l6v54lb6a2b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAU8WpUqQjq9ssTR_XJV9Ia0RqJTvMnAQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "309647849729-089kr1mfosg8njq52bkh8l6v54lb6a2b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

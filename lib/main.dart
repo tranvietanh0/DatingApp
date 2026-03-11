@@ -10,7 +10,7 @@ import 'core/services/performance_service.dart';
 import 'firebase_options.dart';
 
 // Set to true to run without Firebase (for testing UI)
-const bool useMockMode = true;
+const bool useMockMode = false;
 
 /// Background message handler - must be top-level function
 @pragma('vm:entry-point')

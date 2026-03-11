@@ -28,14 +28,16 @@ class DefaultFirebaseOptions {
   }
 
   // TODO: Replace with your Firebase project configuration
-  // Run `flutterfire configure` to generate the correct values
+
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'YOUR_API_KEY',
-    appId: 'YOUR_APP_ID',
-    messagingSenderId: 'YOUR_SENDER_ID',
-    projectId: 'YOUR_PROJECT_ID',
-    storageBucket: 'YOUR_STORAGE_BUCKET',
+    apiKey: 'AIzaSyDAU8WpUqQjq9ssTR_XJV9Ia0RqJTvMnAQ',
+    appId: '1:309647849729:android:b88be8133c0abf85560300',
+    messagingSenderId: '309647849729',
+    projectId: 'tranv-dating-app',
+    storageBucket: 'tranv-dating-app.firebasestorage.app',
   );
+
+  // Run `flutterfire configure` to generate the correct values
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'YOUR_API_KEY',
