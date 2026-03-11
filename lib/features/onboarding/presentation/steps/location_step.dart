@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../discovery/presentation/discovery_page.dart';
 import '../../../profile/application/profile_providers.dart';
 
 class LocationStep extends ConsumerStatefulWidget {
@@ -189,21 +191,17 @@ class _LocationStepState extends ConsumerState<LocationStep> {
                   : const Icon(Icons.my_location_rounded),
               label: Text(_isLoading ? 'Getting location...' : 'Enable Location'),
             ),
-          if (_locationGranted || hasLocation)
-            FilledButton(
-              onPressed: () {
-                // Profile is complete, router will redirect
-              },
-              child: const Text('Continue'),
-            ),
           const SizedBox(height: 16),
-          if (!_locationGranted && !hasLocation)
-            TextButton(
-              onPressed: () {
-                // Skip for now - user can enable later
-              },
-              child: const Text('Skip for now'),
-            ),
+          // Always show Continue button
+          FilledButton(
+            onPressed: () {
+              debugPrint('LocationStep: Continue pressed, navigating to ${DiscoveryPage.routePath}');
+              final profile = ref.read(profileControllerProvider).profile;
+              debugPrint('LocationStep: profile.isComplete = ${profile?.isComplete}, photos=${profile?.photos.length}, interestedIn=${profile?.interestedIn.length}');
+              context.go(DiscoveryPage.routePath);
+            },
+            child: const Text('Continue to Discovery'),
+          ),
         ],
       ),
     );

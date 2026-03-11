@@ -32,7 +32,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   void _nextStep() {
-    if (_currentStep < _totalSteps - 1) {
+    if (_currentStep < _totalSteps - 1 && _pageController.hasClients) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
@@ -41,7 +41,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   void _previousStep() {
-    if (_currentStep > 0) {
+    if (_currentStep > 0 && _pageController.hasClients) {
       _pageController.previousPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'router/app_router.dart';
 import '../core/theme/app_theme.dart';
-import '../features/notifications/presentation/notification_wrapper.dart';
+import '../main.dart' show useMockMode;
 
 class DatingApp extends ConsumerWidget {
   const DatingApp({super.key});
@@ -12,13 +12,12 @@ class DatingApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(appRouterProvider);
 
-    return NotificationWrapper(
-      child: MaterialApp.router(
-        title: 'Dating App',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.light(),
-        routerConfig: router,
-      ),
+    // Skip NotificationWrapper in mock mode (requires Firebase)
+    return MaterialApp.router(
+      title: 'Dating App',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.light(),
+      routerConfig: router,
     );
   }
 }

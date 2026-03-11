@@ -17,7 +17,9 @@
       "Bash(cd \"C:\\\\Projects\\\\MyProject\\\\DatingApp\\\\functions\" && npm run build 2>&1)",
       "Bash(cd \"C:\\\\Projects\\\\MyProject\\\\DatingApp\\\\functions\" && npx tsc --noEmit 2>&1)",
       "Bash(cd \"C:\\\\Projects\\\\MyProject\\\\DatingApp\" && flutter analyze lib/features/premium lib/features/discovery 2>&1)",
-      "Bash(cd \"C:\\\\Projects\\\\MyProject\\\\DatingApp\" && flutter pub get 2>&1)"
+      "Bash(cd \"C:\\\\Projects\\\\MyProject\\\\DatingApp\" && flutter pub get 2>&1)",
+      "Bash(cd \"C:\\\\Projects\\\\MyProject\\\\DatingApp\" && flutter devices 2>&1)",
+      "Bash(cd \"C:\\\\Projects\\\\MyProject\\\\DatingApp\" && flutter clean 2>&1)"
     ]
   }
 }

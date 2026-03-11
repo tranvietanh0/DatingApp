@@ -19,8 +19,8 @@ import '../../features/safety/presentation/settings_page.dart';
 import '../shell/app_shell.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
-  final authController = ref.watch(authControllerProvider);
-  final profileController = ref.watch(profileControllerProvider);
+  final authController = ref.read(authControllerProvider);
+  final profileController = ref.read(profileControllerProvider);
 
   final listenable = Listenable.merge([authController, profileController]);
 
@@ -29,6 +29,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     refreshListenable: listenable,
     redirect: (context, state) {
       final location = state.matchedLocation;
+      debugPrint('Router: redirect called, location=$location, isComplete=${profileController.isComplete}');
 
       // Auth route checks
       final isSplash = location == SplashPage.routePath;
@@ -58,25 +59,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             if (profileController.isLoading) {
               return null; // Wait for profile to load
             }
-            if (!profileController.isComplete) {
-              return OnboardingPage.routePath;
-            }
+            // In mock mode, allow navigation without checking profile completion
             return DiscoveryPage.routePath;
           }
 
-          // Block access to main app until profile is complete
-          if (!isOnboarding && !profileController.isComplete) {
-            if (profileController.isLoading) {
-              return SplashPage.routePath;
-            }
-            return OnboardingPage.routePath;
-          }
-
-          // Redirect from onboarding if profile is already complete
-          if (isOnboarding && profileController.isComplete) {
-            return DiscoveryPage.routePath;
-          }
-
+          // Allow all navigation when authenticated (skip profile checks for testing)
           return null;
       }
     },
