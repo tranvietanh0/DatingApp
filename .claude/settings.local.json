@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd \"C:\\\\Projects\\\\MyProject\\\\DatingApp\" && flutter analyze)",
+      "Bash(cd \"C:\\\\Projects\\\\MyProject\\\\DatingApp\" && flutter test)"
+    ]
+  }
+}
