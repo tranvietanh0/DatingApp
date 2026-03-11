@@ -37,7 +37,10 @@ Before running, configure Firebase:
 ```
 lib/
   app/              # App-level setup (router, shell, theme)
-  core/             # Shared utilities (theme, widgets)
+  core/             # Shared utilities
+    theme/          # App theme, colors
+    widgets/        # Reusable widgets
+    services/       # Analytics, crash reporting, moderation
   features/         # Feature modules
     auth/           # Firebase Auth (Phone OTP + Google)
     profile/        # Firestore profile management
@@ -73,6 +76,14 @@ Located in `functions/src/`:
 - `onSwipe.ts` - Creates match on mutual like, sends FCM notifications, sets Bumble rules
 - `onMessage.ts` - Updates match last message, sends FCM notifications
 - `cleanupExpiredMatches.ts` - Scheduled hourly cleanup of expired Bumble matches
+- `onReportCreated.ts` - Auto-flags users with multiple reports, moderation actions
+
+### Core Services
+Located in `lib/core/services/`:
+- `AnalyticsService` - Firebase Analytics event tracking
+- `CrashReportingService` - Firebase Crashlytics integration
+- `PerformanceService` - Firebase Performance custom traces
+- `ModerationService` - Rate limiting, anti-spam, user status checks
 
 ## Data Models (Firestore)
 
@@ -91,6 +102,8 @@ Brand colors defined in `lib/core/theme/app_theme.dart`:
 - Typography: Space Grotesk (headings), DM Sans (body)
 
 ## Module Status
+All modules complete - MVP ready!
+
 - Phase 1 (Foundation + Auth): Complete - Firebase Auth integrated
 - Phase 2 (Profile + Onboarding): Complete - Firestore + Storage
 - Phase 3 (Discovery + Swipe): Complete - Card swiper, geo filtering
@@ -100,4 +113,4 @@ Brand colors defined in `lib/core/theme/app_theme.dart`:
 - Phase 7 (Safety): Complete - Block, report, hide profile, delete account
 - Phase 8 (Bumble Rules): Complete - Women-message-first, match expiry, extend
 - Phase 9 (Premium): Complete - Undo, boost, who liked you, paywall
-- Phase 10 (Operations): Not started - Analytics, crash reporting, moderation
+- Phase 10 (Operations): Complete - Analytics, crash reporting, moderation

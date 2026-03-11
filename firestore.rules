@@ -63,6 +63,23 @@ service cloud.firestore {
       allow read, update, delete: if false;
     }
 
+    // Moderation queue (admin only)
+    match /moderation_queue/{userId} {
+      allow read, write: if false; // Only Cloud Functions
+    }
+
+    // Rate limit logs (admin only)
+    match /rate_limit_logs/{logId} {
+      allow read: if false;
+      allow create: if isAuthenticated();
+    }
+
+    // App config
+    match /config/{configId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Admin only
+    }
+
     // Matches collection
     match /matches/{matchId} {
       // Helper function to check if user is part of the match
