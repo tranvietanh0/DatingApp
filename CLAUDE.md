@@ -4,17 +4,32 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Flutter dating app (Android-first MVP). Tinder-like core with planned Bumble-style rules as an upgrade module. Currently executing Module 2 (Authentication) of an 11-module roadmap defined in PLAN.md.
+Flutter dating app (Android-first MVP). Tinder-like swipe cards with mutual matching. Uses Flutter + Firebase stack.
 
 ## Commands
 
 ```bash
 flutter analyze       # Static analysis
 flutter test          # Run all tests
-flutter test test/widget_test.dart  # Run single test file
 flutter run           # Run on connected device/emulator
 flutter pub get       # Install dependencies
+
+# Firebase (after setup)
+cd functions && npm run build   # Build Cloud Functions
+firebase deploy --only functions # Deploy functions
+firebase deploy --only firestore:rules # Deploy Firestore rules
 ```
+
+## Firebase Setup Required
+
+Before running, configure Firebase:
+1. Create Firebase project at https://console.firebase.google.com
+2. Enable Authentication (Phone + Google)
+3. Create Firestore Database
+4. Create Storage bucket
+5. Run `flutterfire configure` to generate `lib/firebase_options.dart`
+6. Download `google-services.json` to `android/app/`
+7. Deploy Cloud Functions: `cd functions && npm install && npm run deploy`
 
 ## Architecture
 
@@ -24,11 +39,15 @@ lib/
   app/              # App-level setup (router, shell, theme)
   core/             # Shared utilities (theme, widgets)
   features/         # Feature modules
-    {feature}/
-      data/         # Repository implementations
-      domain/       # Models, enums, interfaces
-      application/  # Controllers, providers
-      presentation/ # Pages, widgets
+    auth/           # Firebase Auth (Phone OTP + Google)
+    profile/        # Firestore profile management
+    onboarding/     # Profile setup flow
+    discovery/      # Swipe cards, candidate fetching
+    matches/        # Match list, Bumble rules
+    chat/           # Real-time messaging
+    notifications/  # FCM push notifications
+    safety/         # Block, report, settings
+    premium/        # Subscriptions, undo, boost, likes
 ```
 
 ### State Management (Riverpod)
@@ -38,19 +57,31 @@ lib/
 
 ### Routing (GoRouter)
 - Routes defined in `lib/app/router/app_router.dart`
-- Auth-aware redirects via `refreshListenable` on `AuthController`
-- Pages define static `routeName` and `routePath` constants
+- Auth-aware redirects via `refreshListenable` on merged controllers
 - Main app uses `StatefulShellRoute.indexedStack` for bottom nav branches
 
-### Auth Pattern
-- Abstract `AuthRepository` allows swapping local stub for Firebase
-- `AuthController` manages `AuthStatus` enum states: `initial`, `authenticating`, `unauthenticated`, `authenticated`
-- OTP flow tracks `pendingPhoneNumber` for two-step verification
-- Session persisted via `SharedPreferences` (local stub)
+### Repository Pattern
+Each feature uses an abstract repository with Firebase implementations:
+- `AuthRepository` / `FirebaseAuthRepository` - Firebase Auth
+- `ProfileRepository` / `FirestoreProfileRepository` - Firestore + Storage
+- `DiscoveryRepository` / `FirestoreDiscoveryRepository` - Geo queries
+- `MatchRepository` / `FirestoreMatchRepository` - Real-time matches
+- `ChatRepository` / `FirestoreChatRepository` - Real-time messages
 
-### Testing
-- Override `authRepositoryProvider` with `FakeAuthRepository` for widget tests
-- Use `ProviderScope` overrides to inject test dependencies
+### Cloud Functions
+Located in `functions/src/`:
+- `onSwipe.ts` - Creates match on mutual like, sends FCM notifications, sets Bumble rules
+- `onMessage.ts` - Updates match last message, sends FCM notifications
+- `cleanupExpiredMatches.ts` - Scheduled hourly cleanup of expired Bumble matches
+
+## Data Models (Firestore)
+
+- `users/{userId}` - User profiles with geohash for location queries
+- `swipes/{swipeId}` - Like/pass/superLike actions
+- `matches/{matchId}` - Mutual matches (ID = sorted userIds joined by _)
+- `matches/{matchId}/messages/{messageId}` - Chat messages
+- `blocks/{blockId}` - User blocks (ID = blockerId_blockedId)
+- `reports/{reportId}` - User reports with reason and status
 
 ## Theme
 Brand colors defined in `lib/core/theme/app_theme.dart`:
@@ -60,6 +91,13 @@ Brand colors defined in `lib/core/theme/app_theme.dart`:
 - Typography: Space Grotesk (headings), DM Sans (body)
 
 ## Module Status
-- Module 1 (Foundation): Complete
-- Module 2 (Authentication): Complete - local stub ready for Firebase swap
-- Modules 3-11: Not started (see PLAN.md for roadmap)
+- Phase 1 (Foundation + Auth): Complete - Firebase Auth integrated
+- Phase 2 (Profile + Onboarding): Complete - Firestore + Storage
+- Phase 3 (Discovery + Swipe): Complete - Card swiper, geo filtering
+- Phase 4 (Matching Engine): Complete - Cloud Functions for match detection
+- Phase 5 (Chat): Complete - Real-time messaging
+- Phase 6 (Notifications): Complete - FCM integration with deep links
+- Phase 7 (Safety): Complete - Block, report, hide profile, delete account
+- Phase 8 (Bumble Rules): Complete - Women-message-first, match expiry, extend
+- Phase 9 (Premium): Complete - Undo, boost, who liked you, paywall
+- Phase 10 (Operations): Not started - Analytics, crash reporting, moderation

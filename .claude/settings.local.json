@@ -2,7 +2,21 @@
   "permissions": {
     "allow": [
       "Bash(cd \"C:\\\\Projects\\\\MyProject\\\\DatingApp\" && flutter analyze)",
-      "Bash(cd \"C:\\\\Projects\\\\MyProject\\\\DatingApp\" && flutter test)"
+      "Bash(cd \"C:\\\\Projects\\\\MyProject\\\\DatingApp\" && flutter test)",
+      "Bash(cd \"C:/Projects/MyProject/DatingApp\" && flutter pub get 2>&1 | head -80)",
+      "Bash(cd \"C:/Projects/MyProject/DatingApp\" && flutter analyze 2>&1)",
+      "Bash(cd \"C:/Projects/MyProject/DatingApp\" && flutter pub deps --style=compact | grep -i google_sign)",
+      "Bash(cd \"C:/Projects/MyProject/DatingApp\" && flutter pub get 2>&1 | tail -20 && flutter analyze 2>&1)",
+      "Bash(firebase --version 2>&1 || echo \"Firebase CLI not installed\")",
+      "Bash(flutterfire --version 2>&1 || echo \"FlutterFire CLI not installed\")",
+      "Bash(cd \"C:\\\\Projects\\\\MyProject\\\\DatingApp\" && flutter analyze lib/features/notifications lib/main.dart lib/app/app.dart 2>&1)",
+      "Bash(cd \"C:\\\\Projects\\\\MyProject\\\\DatingApp\" && flutter analyze lib/features/safety lib/features/matches/presentation/matches_page.dart lib/features/profile/presentation/profile_page.dart lib/app/router/app_router.dart lib/features/discovery/data/firestore_discovery_repository.dart lib/features/notifications/presentation/notification_wrapper.dart 2>&1)",
+      "Bash(cd \"C:\\\\Projects\\\\MyProject\\\\DatingApp\" && flutter analyze lib/features/safety 2>&1)",
+      "Bash(cd \"C:\\\\Projects\\\\MyProject\\\\DatingApp\" && flutter analyze 2>&1)",
+      "Bash(cd \"C:\\\\Projects\\\\MyProject\\\\DatingApp\" && flutter analyze lib/features/matches lib/features/chat 2>&1)",
+      "Bash(cd \"C:\\\\Projects\\\\MyProject\\\\DatingApp\\\\functions\" && npm run build 2>&1)",
+      "Bash(cd \"C:\\\\Projects\\\\MyProject\\\\DatingApp\\\\functions\" && npx tsc --noEmit 2>&1)",
+      "Bash(cd \"C:\\\\Projects\\\\MyProject\\\\DatingApp\" && flutter analyze lib/features/premium lib/features/discovery 2>&1)"
     ]
   }
 }
